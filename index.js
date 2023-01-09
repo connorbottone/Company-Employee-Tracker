@@ -95,7 +95,7 @@ const mainPrompt = () => {
                 showBudgets();
             }
             if (userChioce === "Exit") {
-                //end the connection need to creat connection then input to stop it here
+                connection.end()
             };
 
 
@@ -193,26 +193,68 @@ const addNewDepartment = () => {
                     if (err) throw err;
                 }
             );
-            console.log('New department has been created')
+            console.log('New department has been created');
             mainPrompt();
         });
 };
+const addEmployee = () => {
+    connection.query('SELECT * FROM role', (err, roles) => {
+        if (err) console.log(err);
+        roles = roles.map((role) => {
+            return {
+                name: role.title,
+                value: role.id,
+            };
+        });
+        inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    name: 'firstName',
+                    message: 'Enter new employees first name'
+                },
+                {
+                    type: 'input',
+                    name: 'lastName',
+                    message: 'Enter new employees last name'
+                },
+                {
+                    type: 'list',
+                    name: 'role',
+                    message: 'Select the role of new employee',
+                    choices: roles,
+                },
+                {
+                    type: 'list',
+                    name: 'managersId',
+                    message: 'Select new employees mangager id',
+                    choices: [1, 4, 7,]
+                }
+            ])
+            .then((data) => {
+                console.log(data.role);
+                connection.query(
+                    'INSERT INTO employee SET ?',
+                    {
+                        first_name: data.firstName,
+                        last_name: data.lastName,
+                        role_id: data.role,
+                        manager_id: data.managersId
+                    },
+                    (err) => {
+                        if (err) throw err;
+                        console.log('New employee has been added to Database');
+                        mainPrompt()
+
+                    }
+                );
+            });
+
+    });
+
+};
 
 
-
-// function - Add a new employee
-//  1. prompt for first_name and last_name
-//      in .then callback, store the first namd and the last name to variables,
-//  2. call function to find all roles on database connection to get all existing roles
-//      in .then callback, create array of role objects with id and title from returned array of role data with .map()
-//  3. prompt user for the role for the employee choosing from a list (array) of role objecs
-//      in .then callback, store the role id to a variable,
-//  4. call function to find all employees on database connection
-//      in .then callback, create array of managers with id, first name, last name from the returned data with .map()
-//  5. prompt user for the manager from a list from the array of managers
-//      in .then callback, create an employee object with variables for first name, last name, role id, manager id
-//  6. call function to create employee on database connection, passing the employee object as input argument
-//      in .then callback, call function to load main prompt for questions
 
 // function - Update an employee's role
 //  1. call function to find all employees on database connection
