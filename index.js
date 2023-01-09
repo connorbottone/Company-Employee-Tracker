@@ -56,7 +56,7 @@ const mainPrompt = () => {
     .then((selected) => {
         const {userChioce} = selected;
     if (userChioce === "View all Employees"){
-        viewEmployee();
+        viewEmployees();
     }
     if (userChioce === "View all Departments"){
         viewDepartments();
@@ -103,7 +103,7 @@ const mainPrompt = () => {
     });
 };
 
-const viewEmployee = () =>{
+const viewEmployees = () =>{
     const dis ='SELECT * FROM employee';
     connection.dis(dis,(err,res)=> {
         if (err) throw err;
@@ -112,11 +112,14 @@ const viewEmployee = () =>{
     mainPrompt()
 }
 
-// function - View all employees
-  // 1. call find all employees method on database connection
-  //    in .then callback, display returned data with console table method
-  // 2. call function to load main prompt for questions
-  //
+const viewDepartments = () =>{
+    const dis ="SELECT * FROM department";
+    connection.dis(dis,(err,res)=>{
+        if (err) throw err;
+        console.table(res)
+    })
+    mainPrompt()
+}
 
 // function - View all roles
 // 1. call find all roles method on database connection
