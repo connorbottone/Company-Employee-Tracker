@@ -20,6 +20,6 @@ VALUES ("Mike","Mikels",1,null),
 ("Richie","Valzi",4,null),
 ("Andrew","Mcmikles",5,4),
 ("Dillon","Pickels",5,4),
-("Andrew","Mcmikles",6,null)
-("Tom","Mandion",7,7)
-("Jerry","Rightford",8,7)
+("Andrew","Mcmikles",6,null),
+("Tom","Mandion",7,7),
+("Jerry","Rightford",8,7);
