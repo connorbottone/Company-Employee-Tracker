@@ -12,7 +12,18 @@ const db = require("./db");
 require("console.table");
 
 // Call startup function
+const mysql = require("mysql2");
 
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "root",
+  database: "Employees_db"
+});
+
+connection.connect(function (err) {
+  if (err) throw err;
+});
 // function: start up
 //    optional: display logo text using asciiart-logo
 //    call function to the main prompt for questions
