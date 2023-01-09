@@ -18,18 +18,6 @@ require("console.table");
 //    call function to the main prompt for questions
 
 
-// function - main prompt for questions
-// - Prompt with the list of choices
-// - In .then callback, check user's response with the switch-case statement.
-//    call the appropriate function depending on what the user chose
-//      - in case of view employees, call the view employees function
-//      - in case of add employee, call the add employee function
-//      - in case of update employee's role, call the update employee role function
-//      - in case of view departments, call the view departments function
-//      - in case of add department, call the add department function
-//      - in case of view roles, call the view roles function
-//      - in case of add role, call the add role function
-//      - in default, call function to quit
 const mainPrompt = () => {
     inquirer.prompt([
         {
@@ -50,21 +38,60 @@ const mainPrompt = () => {
                 'Delete exsisting department',
                 'Delete exsiting employee',
                 'View  budgets by department',
-                'No Action']
+                'Exit']
 
         }
     ])
-}
-//
-// OPTIONAL:
-//      - in case of update employee's manager, call the update employee manager function
-//      - in case of view employees by manager, call the view employees by manager function
-//      - in case of view employees by department, call the view employees by department function
-//      - in case of view utilized budget by department, call the function to view utilized budget by department
-//      - in case of remove department, call the remove department function
-//      - in case of remove role, call the remove role function
-//      - in case of remve employee, call the remove employee function
-//      - in default, call function to quit
+    .then((selected) => {
+        const {userChioce} = selected;
+    if (userChioce === "View all Employees"){
+        viewEmployee();
+    }
+    if (userChioce === "View all Departments"){
+        viewDepartments();
+    }
+    if (userChioce === "View all Roles"){
+        viewRoles();
+    }
+    if (userChioce === "Add new Role"){
+        addRole();
+    }
+    if (userChioce === "Add new Department"){
+        addDepartment();
+    }
+    if (userChioce === "Add new employee"){
+        addEmployee();
+    }
+    if (userChioce === "Update an employee role"){
+        updateRole();
+    }
+    if (userChioce === "Update an employee manager"){
+        updateManager();
+    }
+    if (userChioce === "View employees by department"){
+        employeeDepartment();
+    }
+    if (userChioce === "Delete exsiting role"){
+        deleteRole();
+    }
+    if (userChioce === "Delete exsiting department"){
+        deleteDepartment();
+    }
+    if (userChioce === "Delete exsiting employee"){
+        deleteEmployee();
+    }
+    if (userChioce === "View  budgets by department"){
+        showBudgets();
+    }
+    if (userChioce === "Exit"){
+        //end the connection need to creat connection then input to stop it here
+    };
+
+
+
+    });
+};
+
 
 // function - View all employees
   // 1. call find all employees method on database connection
