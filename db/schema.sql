@@ -4,26 +4,24 @@ CREATE DATABASE your_database;
 USE your_database;
 
 CREATE TABLE department (
-  -- id set to ainteger, automatic increment, and primary key
-  -- name set to varchar, max size 30, not null
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE role (
-  -- id set to integer, automatic increment, and primary key
-  -- title set to varchar, max size 30, and not null
-  -- salary set to decimal and not null
-  -- department id set to integer and not null
-  -- foreign key department id referencing department table on id with on delete constraint
-  -- optional - index on department id
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(30) NOT NULL,
+  salary DECIMAL NOT NULL,
+  department_id INT,
+  FOREIGN KEY (department_id) REFERENCES department(id) ON DELETE SET NULL
 );
 
 CREATE TABLE employee (
-  -- id set to integer with automatic increment and primary key constraints
-  -- first name set to var char, max size 30, and not null contraint
-  -- last name set to var char, max size 30, and not null
-  -- role id set to integer and not null
-  -- manager id set to integer
-  -- foreign key on role id referencing role table on id with on delete constraint
-  -- foreign key on manager id referencing employee table on id with on delete constraint
-  -- optional - indexes on role id, manager id
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  first_name VARCHAR(30) NOT NULL,
+  last_name VARCHAR(30) NOT NULL,
+  role_id INT,
+  manager_id INT,
+  FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE SET NULL,
+  FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
 );
