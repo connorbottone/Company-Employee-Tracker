@@ -5,6 +5,7 @@
 // Import inquirer
 // Optional: import asciiart-logo
 // import your database module
+const { default: inquirer } = require("inquirer");
 const db = require("./db");
 
 // Import console table for logging information on screen in table format
@@ -29,6 +30,31 @@ require("console.table");
 //      - in case of view roles, call the view roles function
 //      - in case of add role, call the add role function
 //      - in default, call function to quit
+const mainPrompt = () => {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'actioncall',
+            message: 'Please select your desierd action',
+            choices: [
+                'View all Employees',
+                'View all Departments',
+                'View all Roles',
+                'Add new Role',
+                'Add new Department',
+                'Add new employee',
+                'Update an employee role',
+                'Update an employee manager',
+                "View employees by department",
+                'Delete exsiting role',
+                'Delete exsisting department',
+                'Delete exsiting employee',
+                'View  budgets by department',
+                'No Action']
+
+        }
+    ])
+}
 //
 // OPTIONAL:
 //      - in case of update employee's manager, call the update employee manager function
