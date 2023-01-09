@@ -8,7 +8,6 @@
 const { default: inquirer } = require("inquirer");
 const db = require("./db");
 
-// Import console table for logging information on screen in table format
 require("console.table");
 
 // Call startup function
@@ -24,9 +23,7 @@ const connection = mysql.createConnection({
 connection.connect(function (err) {
     if (err) throw err;
 });
-// function: start up
-//    optional: display logo text using asciiart-logo
-//    call function to the main prompt for questions
+
 
 
 const mainPrompt = () => {
@@ -41,10 +38,10 @@ const mainPrompt = () => {
                 'View all Roles',
                 'Add new Role',
                 'Add new Department',
-                'Add new employee',
+                'Add new employee',// done up to here
                 'Update an employee role',
                 'Update an employee manager',
-                "View employees by department",
+                "View employees by department",//extra credit 
                 'Delete exsiting role',
                 'Delete exsisting department',
                 'Delete exsiting employee',
