@@ -15,14 +15,14 @@ require("console.table");
 const mysql = require("mysql2");
 
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "Employees_db"
+    host: "localhost",
+    user: "root",
+    password: "root",
+    database: "Employees_db"
 });
 
 connection.connect(function (err) {
-  if (err) throw err;
+    if (err) throw err;
 });
 // function: start up
 //    optional: display logo text using asciiart-logo
@@ -53,82 +53,82 @@ const mainPrompt = () => {
 
         }
     ])
-    .then((selected) => {
-        const {userChioce} = selected;
-    if (userChioce === "View all Employees"){
-        viewEmployees();
-    }
-    if (userChioce === "View all Departments"){
-        viewDepartments();
-    }
-    if (userChioce === "View all Roles"){
-        viewRoles();
-    }
-    if (userChioce === "Add new Role"){
-        addRole();
-    }
-    if (userChioce === "Add new Department"){
-        addDepartment();
-    }
-    if (userChioce === "Add new employee"){
-        addEmployee();
-    }
-    if (userChioce === "Update an employee role"){
-        updateRole();
-    }
-    if (userChioce === "Update an employee manager"){
-        updateManager();
-    }
-    if (userChioce === "View employees by department"){
-        employeeDepartment();
-    }
-    if (userChioce === "Delete exsiting role"){
-        deleteRole();
-    }
-    if (userChioce === "Delete exsiting department"){
-        deleteDepartment();
-    }
-    if (userChioce === "Delete exsiting employee"){
-        deleteEmployee();
-    }
-    if (userChioce === "View  budgets by department"){
-        showBudgets();
-    }
-    if (userChioce === "Exit"){
-        //end the connection need to creat connection then input to stop it here
-    };
+        .then((selected) => {
+            const { userChioce } = selected;
+            if (userChioce === "View all Employees") {
+                viewEmployees();
+            }
+            if (userChioce === "View all Departments") {
+                viewDepartments();
+            }
+            if (userChioce === "View all Roles") {
+                viewRoles();
+            }
+            if (userChioce === "Add new Role") {
+                addRole();
+            }
+            if (userChioce === "Add new Department") {
+                addDepartment();
+            }
+            if (userChioce === "Add new employee") {
+                addEmployee();
+            }
+            if (userChioce === "Update an employee role") {
+                updateRole();
+            }
+            if (userChioce === "Update an employee manager") {
+                updateManager();
+            }
+            if (userChioce === "View employees by department") {
+                employeeDepartment();
+            }
+            if (userChioce === "Delete exsiting role") {
+                deleteRole();
+            }
+            if (userChioce === "Delete exsiting department") {
+                deleteDepartment();
+            }
+            if (userChioce === "Delete exsiting employee") {
+                deleteEmployee();
+            }
+            if (userChioce === "View  budgets by department") {
+                showBudgets();
+            }
+            if (userChioce === "Exit") {
+                //end the connection need to creat connection then input to stop it here
+            };
 
 
 
-    });
+        });
 };
 
-const viewEmployees = () =>{
-    const dis ='SELECT * FROM employee';
-    connection.dis(dis,(err,res)=> {
+const viewEmployees = () => {
+    const dis = 'SELECT * FROM employee';
+    connection.dis(dis, (err, res) => {
         if (err) throw err;
         console.table(res)
     })
     mainPrompt()
 }
 
-const viewDepartments = () =>{
-    const dis ="SELECT * FROM department";
-    connection.dis(dis,(err,res)=>{
+const viewDepartments = () => {
+    const dis = "SELECT * FROM department";
+    connection.dis(dis, (err, res) => {
         if (err) throw err;
         console.table(res)
     })
     mainPrompt()
 }
-const viewRoles = () =>{
-    const dis ="SELECT * FROM role";
-    connection.dis(dis,(err,res)=>{
+const viewRoles = () => {
+    const dis = "SELECT * FROM role";
+    connection.dis(dis, (err, res) => {
         if (err) throw err;
         console.table(res)
     })
     mainPrompt()
 }
-const addRole= () =>{
+const addRole = () => {
     connection.query('SELECT * FROM department', (err, departments) => {
         if (err) console.log(err);
         departments = departments.map((department) => {
@@ -142,12 +142,12 @@ const addRole= () =>{
                 {
                     type: 'input',
                     name: 'role',
-                    message: 'Enter title of new role...'
+                    message: 'Enter title for new role'
                 },
                 {
                     type: 'input',
                     name: 'roleSalary',
-                    message: 'Enter salary of new role...',
+                    message: 'Enter salary of new role',
                 },
                 {
                     type: 'list',
@@ -168,21 +168,36 @@ const addRole= () =>{
                         if (err) throw err;
                     }
                 );
-                console.log('added new employee role!')
-                mainPrompt()
+                console.log('New employee role has been added')
+                mainPrompt();
             });
 
     });
 
 };
+const addNewDepartment = () => {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'addDepartment',
+                message: 'Enter the name for new Department'
+            },
+        ])
+        .then((data) => {
+            connection.query('INSERT INTO department SET ?',
+                {
+                    name: data.addDepartment,
+                },
+                function (err) {
+                    if (err) throw err;
+                }
+            );
+            console.log('New department has been created')
+            mainPrompt();
+        });
+};
 
-
-
-// Add a department
-//  1. prompt user for the name of the department
-//      in .then callback, call create department method on database connection, passing the returned data as input argument
-//  2. call function to load main prompt for questions
-//
 
 
 // function - Add a new employee
