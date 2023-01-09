@@ -38,7 +38,7 @@ const mainPrompt = () => {
                 'View all Roles',
                 'Add new Role',
                 'Add new Department',
-                'Add new employee',// done up to here
+                'Add new employee',
                 'Update an employee role',
                 'Update an employee manager',
                 "View employees by department",//extra credit 
@@ -250,25 +250,61 @@ const addEmployee = () => {
     });
 
 };
+const updateRole =() =>{
+    connection.query('SELECT * FROM employee', (err, employed) => {
+        if (err) console.log(err);
+        employed = employed.map((employee) => {
+            return {
+                name: employee.first_name ,employee.last_name,
+                value: employee.id,
+            };
+        });
+        connection.query('SELECT * FROM role', (err, roles) => {
+            if (err) console.log(err);
+            roles = roles.map((role) => {
+                return {
+                    name: role.title,
+                    value: role.id,
+                }
+            });
+            inquirer
+                .prompt([
+                    {
+                        type: 'list',
+                        name: 'Employee',
+                        message: 'Select the employee you want to reassign role',
+                        choices: employed,
+                    },
+                    {
+                        type: 'list',
+                        name: 'newRole',
+                        message: 'What role do you want to assign to this employee?',
+                        choices: roles,
+                    },
+                ])
+                .then((data) => {
+                    connection.query('UPDATE employee SET ? WHERE ?',
+                        [
+                            {
+                                role_id: data.newRole,
+                            },
+                            {
+                                id: data.Employee,
+                            },
+                        ],
+                        function (err) {
+                            if (err) throw err;
+                        }
+                    );
+                    console.log('Employee role updated');
+                mainPrompt()
+                });
+
+        });
+    });
+};
 
 
-
-// function - Update an employee's role
-//  1. call function to find all employees on database connection
-//      - in .then callback, take first name, last name, and id from the returned database data and create an array
-//        of new employee objects with .map().
-//      - new objects have two properties, name and value
-//        name consists of first name and last name from the returned database data
-//        value has id from the returned database data
-//  2. prompt the list of choices from the new array of employee objects
-//      - in .then callback, store employee id to a variable from the returned user choice
-//  3. call function to find all roles on database connection
-//      - in .then callback, create a new array of new role objects using .map on the returned database role data
-//      - for the new role objects, assign title from returned database data to the name property and assign id to the value property
-//  4. prompt user with the list of choices from the new array of new role objects
-//      - in .then callback, assign returned user choice to a role id variable
-//  5. call function to update employee role, passing employee id variable and role id variable as input arguments
-//  6. call fucntion to load main prompt of questions
 
 
 // function - Exit the application
