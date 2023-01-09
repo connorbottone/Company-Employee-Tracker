@@ -103,6 +103,14 @@ const mainPrompt = () => {
     });
 };
 
+const viewEmployee = () =>{
+    const dis ='SELECT * FROM employee';
+    connection.dis(dis,(err,res)=> {
+        if (err) throw err;
+        console.table(res)
+    })
+    mainPrompt()
+}
 
 // function - View all employees
   // 1. call find all employees method on database connection
