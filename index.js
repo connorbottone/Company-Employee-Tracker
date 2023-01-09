@@ -120,18 +120,63 @@ const viewDepartments = () =>{
     })
     mainPrompt()
 }
+const viewRoles = () =>{
+    const dis ="SELECT * FROM role";
+    connection.dis(dis,(err,res)=>{
+        if (err) throw err;
+        console.table(res)
+    })
+    mainPrompt()
+}
+const addRole= () =>{
+    connection.query('SELECT * FROM department', (err, departments) => {
+        if (err) console.log(err);
+        departments = departments.map((department) => {
+            return {
+                name: department.name,
+                value: department.id,
+            };
+        });
+        inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    name: 'role',
+                    message: 'Enter title of new role...'
+                },
+                {
+                    type: 'input',
+                    name: 'roleSalary',
+                    message: 'Enter salary of new role...',
+                },
+                {
+                    type: 'list',
+                    name: 'departmentId',
+                    message: 'Enter department of new role...',
+                    choices: departments,
+                },
+            ])
+            .then((data) => {
+                connection.query(
+                    'INSERT INTO role SET ?',
+                    {
+                        title: data.role,
+                        salary: data.roleSalary,
+                        department_id: data.departmentId,
+                    },
+                    function (err) {
+                        if (err) throw err;
+                    }
+                );
+                console.log('added new employee role!')
+                mainPrompt()
+            });
 
-// function - View all roles
-// 1. call find all roles method on database connection
-//    in .then callback, dispalay returned data with console table
-// 2. call function to load main prompt for questons
-//
+    });
 
-// function - View all deparments
-//  1. call find all departments method on database connnection
-//      in .then call back, display returned data with console table
-//  2. call function to load main prompt for questions
-//
+};
+
+
 
 // Add a department
 //  1. prompt user for the name of the department
@@ -139,14 +184,6 @@ const viewDepartments = () =>{
 //  2. call function to load main prompt for questions
 //
 
-// functon - Add a role
-//  **prompt for user to enter the role, the salary, and what department the role belongs to
-//  1. call find all departments method on database connection to get array of existing department records
-//      in .then call back, create array of objects with names and ids from returned data with .map() method
-//  2. prompt user for title, salary, and department choosing from the list of departmernts created above
-//      in .then callback, call funcon to create role on database connection, passing returned data from prompt as input argument
-//  3. call function to load main prompt for questions
-//
 
 // function - Add a new employee
 //  1. prompt for first_name and last_name
