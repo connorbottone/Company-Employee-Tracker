@@ -1,18 +1,15 @@
-/*
-  REMOVE COMMENTS BEFORE SUBMITTING YOUR HOMEWORK
-*/
 
-// Import inquirer
-// Optional: import asciiart-logo
-// import your database module
-const { default: inquirer } = require("inquirer");
+
+// Imports inquire
+// Imports your database module
+const inquirer = require("inquirer");
 const db = require("./db");
 
 require("console.table");
 
 // Call startup function
 const mysql = require("mysql2");
-
+//creating connection
 const connection = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -25,12 +22,12 @@ connection.connect(function (err) {
 });
 
 
-
+//inital prompt that will be ran at the launch of program
 const mainPrompt = () => {
     inquirer.prompt([
         {
             type: 'list',
-            name: 'actioncall',
+            name: 'userChioce',
             message: 'Please select your desierd action',
             choices: [
                 'View all Employees',
@@ -40,16 +37,10 @@ const mainPrompt = () => {
                 'Add new Department',
                 'Add new employee',
                 'Update an employee role',
-                'Update an employee manager',
-                "View employees by department",//extra credit 
-                'Delete exsiting role',
-                'Delete exsisting department',
-                'Delete exsiting employee',
-                'View  budgets by department',
                 'Exit']
 
         }
-    ])
+    ])//Taking the value of what the user selected and comparing it to out options to see what function needs to be called
         .then((selected) => {
             const { userChioce } = selected;
             if (userChioce === "View all Employees") {
@@ -73,24 +64,6 @@ const mainPrompt = () => {
             if (userChioce === "Update an employee role") {
                 updateRole();
             }
-            if (userChioce === "Update an employee manager") {
-                updateManager();
-            }
-            if (userChioce === "View employees by department") {
-                employeeDepartment();
-            }
-            if (userChioce === "Delete exsiting role") {
-                deleteRole();
-            }
-            if (userChioce === "Delete exsiting department") {
-                deleteDepartment();
-            }
-            if (userChioce === "Delete exsiting employee") {
-                deleteEmployee();
-            }
-            if (userChioce === "View  budgets by department") {
-                showBudgets();
-            }
             if (userChioce === "Exit") {
                 connection.end()
             };
@@ -99,32 +72,34 @@ const mainPrompt = () => {
 
         });
 };
-
+//displaying all of our employees within the database, then mainprompt will be initiaed again where user can make a new choice of what they want to do
 const viewEmployees = () => {
-    const dis = 'SELECT * FROM employee';
-    connection.dis(dis, (err, res) => {
+    const dis= 'SELECT * FROM employee';
+    connection.query(dis, (err, res) => {
         if (err) throw err;
         console.table(res)
     })
     mainPrompt()
 }
-
+//displaying all of our Departments within the database, then mainprompt will be initiaed again where user can make a new choice of what they want to do
 const viewDepartments = () => {
     const dis = "SELECT * FROM department";
-    connection.dis(dis, (err, res) => {
+    connection.query(dis, (err, res) => {
         if (err) throw err;
         console.table(res)
     })
     mainPrompt()
 }
+//displaying all of our Roles within the database, then mainprompt will be initiaed again where user can make a new choice of what they want to do
 const viewRoles = () => {
     const dis = "SELECT * FROM role";
-    connection.dis(dis, (err, res) => {
+    connection.query(dis, (err, res) => {
         if (err) throw err;
         console.table(res)
     })
     mainPrompt()
 }
+//selecting all from departments so user can specify what department they want to create a new role within
 const addRole = () => {
     connection.query('SELECT * FROM department', (err, departments) => {
         if (err) console.log(err);
@@ -153,6 +128,7 @@ const addRole = () => {
                     choices: departments,
                 },
             ])
+            //Adding our new role to the database
             .then((data) => {
                 connection.query(
                     'INSERT INTO role SET ?',
@@ -171,8 +147,8 @@ const addRole = () => {
 
     });
 
-};
-const addNewDepartment = () => {
+};//User will input fileds for a new dep and then it will be inserted into our database
+const addDepartment = () => {
     inquirer
         .prompt([
             {
@@ -193,7 +169,7 @@ const addNewDepartment = () => {
             console.log('New department has been created');
             mainPrompt();
         });
-};
+};//we are grabing all roles from db so user can define the role of the newlt created employee
 const addEmployee = () => {
     connection.query('SELECT * FROM role', (err, roles) => {
         if (err) console.log(err);
@@ -221,13 +197,13 @@ const addEmployee = () => {
                     message: 'Select the role of new employee',
                     choices: roles,
                 },
-                {
+                {//1,4,7, our our 3 manager ids refrence seeds.sql
                     type: 'list',
                     name: 'managersId',
                     message: 'Select new employees mangager id',
                     choices: [1, 4, 7,]
                 }
-            ])
+            ])//adds our new employee to the db
             .then((data) => {
                 console.log(data.role);
                 connection.query(
@@ -249,7 +225,7 @@ const addEmployee = () => {
 
     });
 
-};
+};//this function will chnage the role of an already exsisting employee in out database then the user will chose the role they want to reassign to the employee
 const updateRole =() =>{
     connection.query('SELECT * FROM employee', (err, employed) => {
         if (err) console.log(err);
@@ -303,27 +279,9 @@ const updateRole =() =>{
         });
     });
 };
+//Initiate our program
+mainPrompt();
 
 
 
-
-// function - Exit the application
-
-// ========================
-//  OPTIONAL
-// ========================
-
-// fuction - View all employees that belong to a department
-
-// function - View all employees that report to a specific manager
-
-// function - Update an employee's manager
-
-// function - View all departments and show their total utilized department budget
-
-// function - Delete an employee
-
-// function - Delete a department
-
-// function - Delete a role
 

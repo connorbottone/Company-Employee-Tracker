@@ -3,7 +3,7 @@ VALUES ("Feild Tech"),
 ("Cutomer service and billing"),
 ("scheduling department");
 
-INSERT INTO ROLE (title, salary, department_id)
+INSERT INTO role (title, salary, department_id)
 VALUES ("feild tech manager",80000,1),
 ("Journeyman tech", 65000,1),
 ("Apprentice tech",40000,1),
