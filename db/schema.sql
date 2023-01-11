@@ -1,9 +1,9 @@
 --If there is a db with the same naming convention it will be dropeed and a new db will be created--
 DROP DATABASE IF EXISTS employees_db;
 CREATE DATABASE employees_db;
-
-USE employees_db;
 --department table that has peramiters of an id and a name--
+USE employees_db;
+
 CREATE TABLE department (
  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(300) UNIQUE NOT NULL
