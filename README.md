@@ -59,8 +59,12 @@
  
  
 ## Features
- - Terminal Prompt that user can select desierd option
- - Terminal prompt will defult back to main prompt after user se;ected action is complete
+ - Terminal Prompt that user can select desierd option using the arrow keys
+ - Terminal prompt will defult back to main prompt after user selected action is complete
+ - User can add New roles
+ - New Employyes 
+ - Aswell as New Roles
+ - User can view stored information by roles employyes and departments 
  
 ## Author
 (email at : connorbottone@gmail.com)
