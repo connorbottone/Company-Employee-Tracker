@@ -1,6 +1,6 @@
 ## Description
  
-- This webpage is designed to help organize a company
+- This webpage is designed to help better organize a company and store information into a database
 - Ths user can view and manage the departments, roles, and employees within the company.
 - The user can add 
 - New roles
